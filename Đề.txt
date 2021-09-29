@@ -1,0 +1,1 @@
+Xây dựng thư viện đồng bộ đồng hồ vật lý theo thời gian của máy chủ (Time server), và xây dựng ứng dụng đồng bộ đồng hồ máy tính của bạn.
