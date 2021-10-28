@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:TimeClient"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+         <ResourceDictionary>
+             <ResourceDictionary.MergedDictionaries>
+                 <ResourceDictionary Source="xmlResource/Color.xaml"/>
+                 <ResourceDictionary Source="xmlResource/Font.xaml"/>
+                 <ResourceDictionary Source="xmlResource/WindowStyle.xaml"/>
+                 <ResourceDictionary Source="xmlResource/ControlStyle.xaml"/>
+             </ResourceDictionary.MergedDictionaries>
+         </ResourceDictionary>
     </Application.Resources>
 </Application>
