@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeClient"
         mc:Ignorable="d"
-        Title="Time Client" Height="280" Width="400" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowStyle}" Background="#676767" Loaded="MainWindow_OnLoaded">
+        Title="Time Client" Height="280" Width="400" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowStyle}" Background="{StaticResource BackgroundBrush}" Loaded="MainWindow_OnLoaded">
     <Grid Width="390">
         <Grid.RowDefinitions>
             <RowDefinition Height="170"/>
@@ -19,13 +19,13 @@
             </Grid.ColumnDefinitions>
 
             <Grid>
-                <Label Style="{StaticResource ControlLabelStyle}" Height="25" Margin="0 20 0 0" HorizontalContentAlignment="Right" VerticalAlignment="Top">Time Zone:</Label>
+                <Label Visibility="Hidden" Style="{StaticResource ControlLabelStyle}" Height="25" Margin="0 20 0 0" HorizontalContentAlignment="Right" VerticalAlignment="Top">Time Zone:</Label>
                 <Label Style="{StaticResource ControlLabelStyle}" Height="25" Margin="0 50 0 0" HorizontalContentAlignment="Right" VerticalAlignment="Top">Time Server:</Label>
                 <Label x:Name="lbIpServer" Style="{StaticResource ControlLabelStyle}" Height="25" Margin="0 80 0 0" HorizontalContentAlignment="Right" VerticalAlignment="Top" Content="Ip Server"/>
             </Grid>
 
             <Grid Grid.Column="1">
-                <ComboBox x:Name="cbTimeZone" Width="250" Height="25" Margin="5 20 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource ControlComboBoxStyle}"/>
+                <ComboBox Visibility="Hidden" x:Name="cbTimeZone" Width="250" Height="25" Margin="5 20 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource ControlComboBoxStyle}"/>
                 <ComboBox x:Name="cbTimeServer" Width="250" Height="25" Margin="5 50 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource ControlComboBoxStyle}" SelectionChanged="CbTimeServer_OnSelectionChanged">
                     <Label>clock.tuitentuan.com</Label>
                     <Label>Khác</Label>

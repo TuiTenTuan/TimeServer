@@ -57,7 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Network.cs" />
+    <Compile Include="TimeSystemStruct.cs" />
     <Compile Include="UTC.cs" />
     <Compile Include="xmlResource\WindowStyle.xaml.cs">
       <DependentUpon>WindowStyle.xaml</DependentUpon>
