@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeClient"
         mc:Ignorable="d"
-        Title="Time Client" Height="450" Width="400" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowStyle}">
-    <Grid>
-        
+        Title="Time Client" Height="280" Width="400" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowStyle}" Background="#676767" Loaded="MainWindow_OnLoaded">
+    <Grid Width="390">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="170"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <Label Style="{StaticResource ControlLabelStyle}" Height="25" Margin="0 20 0 0" HorizontalContentAlignment="Right" VerticalAlignment="Top">Time Zone:</Label>
+                <Label Style="{StaticResource ControlLabelStyle}" Height="25" Margin="0 50 0 0" HorizontalContentAlignment="Right" VerticalAlignment="Top">Time Server:</Label>
+                <Label x:Name="lbIpServer" Style="{StaticResource ControlLabelStyle}" Height="25" Margin="0 80 0 0" HorizontalContentAlignment="Right" VerticalAlignment="Top" Content="Ip Server"/>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <ComboBox x:Name="cbTimeZone" Width="250" Height="25" Margin="5 20 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource ControlComboBoxStyle}"/>
+                <ComboBox x:Name="cbTimeServer" Width="250" Height="25" Margin="5 50 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource ControlComboBoxStyle}" SelectionChanged="CbTimeServer_OnSelectionChanged">
+                    <Label>clock.tuitentuan.com</Label>
+                    <Label>Khác</Label>
+                </ComboBox>
+                <TextBox x:Name="tbIpServer" Width="250" Height="25" Margin="5 80 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" Style="{StaticResource ControlTextBoxStyle}"/>
+
+                <Button x:Name="btnSync" Width="150" Height="30" Margin="0 0 20 20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Style="{StaticResource ControlButtonStyle}" Click="BtnSync_OnClick">Sync</Button>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <TextBlock x:Name="tbStatus" Width="360" Height="60" VerticalAlignment="Top" Style="{StaticResource ControlTextBlockStyle}">waiting for sync from clock.tuitentuan.com</TextBlock>
+        </Grid>
     </Grid>
 </Window>

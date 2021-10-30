@@ -24,9 +24,9 @@
                 <ControlTemplate TargetType="Window">
                     <Border Background="{TemplateBinding Background}" Margin="0" CornerRadius="10" ClipToBounds="true" BorderThickness="0" Padding="0"  Width="{TemplateBinding ActualWidth}" Height="{TemplateBinding ActualHeight}">
                         <Border Background="{TemplateBinding BorderBrush}" Margin="0" CornerRadius="10" ClipToBounds="true" BorderThickness="0" Padding="0" Width="{TemplateBinding ActualWidth}" Height="{TemplateBinding ActualHeight}">
-                            <Grid Margin="5">
+                            <Grid Margin="5" x:Name="gridContent">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30" x:Name="RowTitle"/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 

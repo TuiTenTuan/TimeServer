@@ -57,6 +57,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Network.cs" />
+    <Compile Include="UTC.cs" />
     <Compile Include="xmlResource\WindowStyle.xaml.cs">
       <DependentUpon>WindowStyle.xaml</DependentUpon>
     </Compile>
@@ -124,6 +126,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\TimeIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\triangle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UTCTimeZone.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
