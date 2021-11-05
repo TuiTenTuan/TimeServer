@@ -58,7 +58,7 @@ namespace TimeServer
             timerIp = new DispatcherTimer()
             {
                 IsEnabled = true,
-                Interval = new TimeSpan(0, 0, 1)
+                Interval = new TimeSpan(0, 0, 10)
             };
 
             timerIp.Tick += TimerIpOnTick;
@@ -138,7 +138,7 @@ namespace TimeServer
 
             lvIpConnect.Dispatcher.Invoke(DispatcherPriority.Render, new Action(delegate ()
                 {
-                    lvIpConnect.Items.Add(socket.RemoteEndPoint.ToString());
+                    lvIpConnect.Items.Add(socket.RemoteEndPoint.ToString() + " " + DateTime.Now.ToString("dd/mm/yyyy HH:mm:ss"));
                 }));
 
             socket.BeginReceive(bufferData, 0, bufferData.Length, SocketFlags.None, new AsyncCallback(ReceiceCallBack), socket);
