@@ -65,11 +65,11 @@ namespace TimeServer
 
             timerIp.Start();
 
-            thread = new Thread(new ThreadStart(ServerStart));
-            thread.IsBackground = true;
-            thread.Start();
+            //thread = new Thread(new ThreadStart(ServerStart));
+            //thread.IsBackground = true;
+            //thread.Start();
 
-            //            ServerStart();
+            ServerStart();
         }
 
         private void TimerIpOnTick(object sender, EventArgs e)
@@ -80,7 +80,12 @@ namespace TimeServer
             }
             else
             {
-                lbServerIp.Content = GetPublicIPAddress();
+                string publicIP = GetPublicIPAddress();
+
+                if (!string.IsNullOrEmpty(publicIP))
+                {
+                    lbServerIp.Content = GetPublicIPAddress();
+                }
             }
 
         }
@@ -94,7 +99,7 @@ namespace TimeServer
 
             _serverSocket.Bind(new IPEndPoint(IPAddress.Any, 90));
 
-            _serverSocket.Listen(5);
+            _serverSocket.Listen(10);
 
             _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
 
@@ -138,7 +143,7 @@ namespace TimeServer
 
             lvIpConnect.Dispatcher.Invoke(DispatcherPriority.Render, new Action(delegate ()
                 {
-                    lvIpConnect.Items.Add(socket.RemoteEndPoint.ToString() + " " + DateTime.Now.ToString("dd/mm/yyyy HH:mm:ss"));
+                    lvIpConnect.Items.Add(socket.RemoteEndPoint.ToString() + " " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
                 }));
 
             socket.BeginReceive(bufferData, 0, bufferData.Length, SocketFlags.None, new AsyncCallback(ReceiceCallBack), socket);
@@ -170,8 +175,6 @@ namespace TimeServer
             socket.BeginSend(dataSend, 0, dataSend.Length, SocketFlags.None, new AsyncCallback(SendCallBack), socket);
         }
 
-        private void SendCallBackNon(IAsyncResult ar) { }
-
         private void SendCallBack(IAsyncResult ar)
         {
             Socket socket = (Socket)ar.AsyncState;
@@ -180,7 +183,7 @@ namespace TimeServer
 
         private void TimerOnTick(object sender, EventArgs e)
         {
-            lbCurrentTime.Content = "Current Timer: " + DateTime.Now.ToString("dd/mm/yyyy HH:mm:ss");
+            lbCurrentTime.Content = "Current Timer: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
         private string GetPublicIPAddress()
@@ -201,9 +204,16 @@ namespace TimeServer
 
             }
 
-            int first = address.IndexOf("Address: ") + 9;
-            int last = address.LastIndexOf("</body>");
-            address = address.Substring(first, last - first);
+            try
+            {
+                int first = address.IndexOf("Address: ") + 9;
+                int last = address.LastIndexOf("</body>");
+                address = address.Substring(first, last - first);
+            }
+            catch (Exception e)
+            {
+
+            }
 
             return address;
         }
@@ -231,11 +241,11 @@ namespace TimeServer
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
-            if (thread.IsAlive)
-            {
-                thread.Abort();
+            //if (thread.IsAlive)
+            //{
+            //    thread.Abort();
 
-            }
+            //}
         }
     }
 }

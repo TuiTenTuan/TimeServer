@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeClient"
         mc:Ignorable="d"
-        Title="Time Client" Height="280" Width="400" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowStyle}" Background="{StaticResource BackgroundBrush}" Loaded="MainWindow_OnLoaded">
+        Title="Time Client" Height="280" Width="400" WindowStartupLocation="CenterScreen" Style="{StaticResource WindowStyle}" Background="#909090" Loaded="MainWindow_OnLoaded">
     <Grid Width="390">
         <Grid.RowDefinitions>
             <RowDefinition Height="170"/>
