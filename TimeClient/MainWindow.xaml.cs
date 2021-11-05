@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xml.Serialization;
 
 namespace TimeClient
@@ -35,15 +37,18 @@ namespace TimeClient
 
         private void CbTimeServer_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbTimeServer.SelectedIndex == 1)
+            if (tbIpServer != null)
             {
-                lbIpServer.Visibility = Visibility.Visible;
-                tbIpServer.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                lbIpServer.Visibility = Visibility.Hidden;
-                tbIpServer.Visibility = Visibility.Hidden;
+                if (cbTimeServer.SelectedIndex == 1)
+                {
+                    lbIpServer.Visibility = Visibility.Visible;
+                    tbIpServer.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    lbIpServer.Visibility = Visibility.Hidden;
+                    tbIpServer.Visibility = Visibility.Hidden;
+                }
             }
         }
 
@@ -57,8 +62,23 @@ namespace TimeClient
 
             cbTimeZone.ItemsSource = timeZone;
 
-            cbTimeZone.SelectedIndex = 0;
             cbTimeServer.SelectedIndex = 0;
+            cbTimeZone.SelectedIndex = 0;
+
+            string currentTimeZone = TimeZoneInfo.Local.ToString();
+
+            string nameTimeZone = currentTimeZone.Substring(11).Trim();
+
+            for (int i = 0; i < timeZone.Count; i++)
+            {
+                if (timeZone[i].Location == nameTimeZone)
+                {
+                    cbTimeZone.SelectedIndex = i;
+                    break;
+                }
+            }
+
+            lbTimeZone.Content = TimeZoneInfo.Local.ToString();
         }
 
         private void BtnSync_OnClick(object sender, RoutedEventArgs e)
@@ -67,7 +87,16 @@ namespace TimeClient
             {
                 tbStatus.Text = "Waiting for sync time from clock.tuitentuan.com";
 
-                SyncTimeStatic();
+                tbStatus.Dispatcher.Invoke(DispatcherPriority.Render, new Action(delegate () { }));
+
+                try
+                {
+                    SyncTimeStatic();
+                }
+                catch (Exception exception)
+                {
+                    tbStatus.Text = "Something went wrong when sync time from clock.tuitentuan.com";
+                }
             }
             else
             {
@@ -78,6 +107,9 @@ namespace TimeClient
                 else
                 {
                     tbStatus.Text = "Waiting for sync time from " + tbIpServer.Text;
+
+                    tbStatus.Dispatcher.Invoke(DispatcherPriority.Render, new Action(delegate () { }));
+
                     CheckIp();
                 }
             }
@@ -94,9 +126,14 @@ namespace TimeClient
                 tbStatus.Text = "Cannot connect to server " + tbIpServer.Text;
             }
 
-            SyncTime(IP);
-
-
+            try
+            {
+                SyncTime(IP);
+            }
+            catch (Exception e)
+            {
+                tbStatus.Text = "Something went wrong when sync time from server " + tbIpServer.Text;
+            }
         }
 
         private void SyncTime(IPAddress ip)
@@ -105,6 +142,7 @@ namespace TimeClient
             ASCIIEncoding encoding = new ASCIIEncoding();
 
             TcpClient client = new TcpClient();
+
 
             client.Connect(ip, 90);
 
@@ -145,10 +183,12 @@ namespace TimeClient
                 //add ofset time
                 DateTime trueTime = DateTime.Now.AddMilliseconds(timeOfset);
 
-                //set time to system
-                SetTimeForSystem(trueTime);
+                MessageBox.Show(trueTime.ToString());
 
-                tbStatus.Text = "Sync time success from server" + ip + " at" + trueTime.ToString();
+                //set time to system
+                //SetTimeForSystem(trueTime);
+
+                tbStatus.Text = "Sync time success from server " + ip + " at " + trueTime.ToString();
             }
             //cannot connect to server
             else
@@ -178,7 +218,7 @@ namespace TimeClient
             foreach (string s in textline)
             {
                 string utcValue = s.Split(' ')[0];
-                string name = s.Substring(utcValue.Length);
+                string name = s.Substring(utcValue.Length).Trim(new[] { '\r', ' ', '\n' });
 
                 UTC utc = new UTC(utcValue, name);
 

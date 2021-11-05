@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Xml.Serialization;
 
 namespace TimeServer
 {
@@ -33,6 +34,14 @@ namespace TimeServer
         private DispatcherTimer timer;
 
         private DispatcherTimer timerIp;
+
+        private Thread thread;
+
+        private List<Socket> _clientSockets = new List<Socket>();
+
+        private Socket _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+        byte[] bufferData = new byte[1024];
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -56,7 +65,11 @@ namespace TimeServer
 
             timerIp.Start();
 
-            ServerStart();
+            thread = new Thread(new ThreadStart(ServerStart));
+            thread.IsBackground = true;
+            thread.Start();
+
+            //            ServerStart();
         }
 
         private void TimerIpOnTick(object sender, EventArgs e)
@@ -79,43 +92,90 @@ namespace TimeServer
             //convert data to byte to send over ethernet
             ASCIIEncoding encoding = new ASCIIEncoding();
 
-            TcpListener server = new TcpListener(IPAddress.Any, 90);
+            _serverSocket.Bind(new IPEndPoint(IPAddress.Any, 90));
 
-            server.Start();
+            _serverSocket.Listen(5);
 
-            byte[] data = new byte[1024];
-
-
-            //server alway run
-            while (true)
-            {
-                Socket socket = server.AcceptSocket();
-
-                lvIpConnect.Items.Add(IPAddress.Parse(socket.LocalEndPoint.ToString()).Address.ToString() + "Reques sycn time at " + DateTime.Now.ToString("dd/mm/yyyy HH:mm:ss"));
-
-                //receive request time sync from client 
-                socket.Receive(data);
-
-                //save time receive message sync time from client by time UTC
-                DateTime receive = DateTime.UtcNow;
+            _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
 
 
-                //delay 1 seconds
-                Thread.Sleep(1000);
+            ////server alway run
+            ////while (true)
+            ////{
+            //Socket socket = server.AcceptSocket();
 
-                //send time receive
-                socket.Send(encoding.GetBytes(receive.ToString()));
+            //lvIpConnect.Items.Add(IPAddress.Parse(socket.LocalEndPoint.ToString()).Address.ToString() + "Reques sycn time at " + DateTime.Now.ToString("dd/mm/yyyy HH:mm:ss"));
 
-                //send time send message time receive
-                socket.Send(encoding.GetBytes(DateTime.UtcNow.ToString()));
+            ////receive request time sync from client 
+            //socket.Receive(data);
+
+            ////save time receive message sync time from client by time UTC
+            //DateTime receive = DateTime.UtcNow;
 
 
-                //end sycn time
-                socket.Close();
-            }
+            ////delay 1 seconds
+            //Thread.Sleep(1000);
 
-            server.Stop();
+            ////send time receive
+            //socket.Send(encoding.GetBytes(receive.ToString()));
 
+            ////send time send message time receive
+            //socket.Send(encoding.GetBytes(DateTime.UtcNow.ToString()));
+
+
+            ////end sycn time
+            //socket.Close();
+            ////}
+
+            //server.Stop();
+
+        }
+
+        private void AcceptCallback(IAsyncResult ar)
+        {
+            Socket socket = _serverSocket.EndAccept(ar);
+            _clientSockets.Add(socket);
+
+            lvIpConnect.Dispatcher.Invoke(DispatcherPriority.Render, new Action(delegate ()
+                {
+                    lvIpConnect.Items.Add(socket.RemoteEndPoint.ToString());
+                }));
+
+            socket.BeginReceive(bufferData, 0, bufferData.Length, SocketFlags.None, new AsyncCallback(ReceiceCallBack), socket);
+
+            _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+        }
+
+        private void ReceiceCallBack(IAsyncResult ar)
+        {
+            Socket socket = (Socket)ar.AsyncState;
+
+            int receiver = socket.EndReceive(ar);
+
+            byte[] dataBuffer = new byte[receiver];
+
+            Array.Copy(bufferData, dataBuffer, receiver);
+
+            string text = Encoding.ASCII.GetString(dataBuffer);
+
+            string timeReceiver = DateTime.UtcNow.ToString();
+
+            Thread.Sleep(1000);
+
+            byte[] dataSend = Encoding.ASCII.GetBytes(timeReceiver);
+
+            socket.BeginSend(dataSend, 0, dataSend.Length, SocketFlags.None, new AsyncCallback(SendCallBack), socket);
+
+            dataSend = Encoding.ASCII.GetBytes(DateTime.UtcNow.ToString());
+            socket.BeginSend(dataSend, 0, dataSend.Length, SocketFlags.None, new AsyncCallback(SendCallBack), socket);
+        }
+
+        private void SendCallBackNon(IAsyncResult ar) { }
+
+        private void SendCallBack(IAsyncResult ar)
+        {
+            Socket socket = (Socket)ar.AsyncState;
+            socket.EndSend(ar);
         }
 
         private void TimerOnTick(object sender, EventArgs e)
@@ -169,5 +229,13 @@ namespace TimeServer
             return localIP;
         }
 
+        private void MainWindow_OnClosed(object sender, EventArgs e)
+        {
+            if (thread.IsAlive)
+            {
+                thread.Abort();
+
+            }
+        }
     }
 }

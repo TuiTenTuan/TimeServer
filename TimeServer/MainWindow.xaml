@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeServer"
         mc:Ignorable="d"
-        Title="Timer Server" Height="400" Width="400" Style="{StaticResource WindowStyle}" WindowStartupLocation="CenterScreen" Background="{StaticResource BackgroundBrush}" Loaded="MainWindow_OnLoaded">
+        Title="Timer Server" Height="400" Width="400" Style="{StaticResource WindowStyle}" WindowStartupLocation="CenterScreen" Background="{StaticResource BackgroundBrush}" Loaded="MainWindow_OnLoaded" Closed="MainWindow_OnClosed">
     <Grid Width="390" Height="360">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
@@ -40,7 +40,6 @@
 
         <Grid Grid.Row="1">
             <ListView x:Name="lvIpConnect" Margin="5" Background="{StaticResource BackgroundBrush}" Foreground="White" FontSize="13" FontFamily="{StaticResource FontRegular}" FontStyle="Italic" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            
             </ListView>
         </Grid>
     </Grid>
