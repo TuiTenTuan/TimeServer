@@ -176,9 +176,13 @@ namespace TimeClient
 
 
                 //caculator ofset time
-                TimeSpan time = (value[1] - value[0]) + (value[2] - value[3]);
 
-                int timeOfset = time.Milliseconds / 2;
+                TimeSpan f1 = value[1].Subtract(value[0]);
+                TimeSpan f2 = value[2].Subtract(value[3]);
+
+                TimeSpan time = f1 + f2;
+
+                double timeOfset = Math.Round(time.TotalMilliseconds / 2, MidpointRounding.ToEven);
 
                 //add ofset time
                 DateTime trueTime = DateTime.Now.AddMilliseconds(timeOfset);

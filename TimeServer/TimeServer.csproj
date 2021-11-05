@@ -62,7 +62,7 @@
     <Compile Include="xmlResource\WindowStyle.xaml.cs">
       <DependentUpon>WindowStyle.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
+    <Page Include="TimeServer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -70,8 +70,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="TimeServer.xaml.cs">
+      <DependentUpon>TimeServer.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="xmlResource\Color.xaml">

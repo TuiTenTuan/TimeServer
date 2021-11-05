@@ -36,6 +36,9 @@
   <PropertyGroup>
     <ApplicationIcon>Image\TimeIcon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -62,7 +65,7 @@
     <Compile Include="xmlResource\WindowStyle.xaml.cs">
       <DependentUpon>WindowStyle.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
+    <Page Include="TimeClient.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -70,8 +73,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="TimeClient.xaml.cs">
+      <DependentUpon>TimeClient.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="xmlResource\Color.xaml">
@@ -112,6 +115,7 @@
     <Resource Include="Font\Linotte Bold.ttf" />
     <Resource Include="Font\Linotte Light.ttf" />
     <Resource Include="Font\Linotte Regular.ttf" />
+    <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
