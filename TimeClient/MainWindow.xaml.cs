@@ -211,19 +211,24 @@ namespace TimeClient
         {
             timeZone.Clear();
 
-            string text = File.ReadAllText(Environment.CurrentDirectory + @"\UTCTimeZone.txt");
-
-            string[] textline = text.Split('\n');
-
-            foreach (string s in textline)
+            try
             {
-                string utcValue = s.Split(' ')[0];
-                string name = s.Substring(utcValue.Length).Trim(new[] { '\r', ' ', '\n' });
+                string text = File.ReadAllText(Environment.CurrentDirectory + @"\UTCTimeZone.txt");
 
-                UTC utc = new UTC(utcValue, name);
+                string[] textline = text.Split('\n');
 
-                timeZone.Add(utc);
+                foreach (string s in textline)
+                {
+                    string utcValue = s.Split(' ')[0];
+                    string name = s.Substring(utcValue.Length).Trim(new[] { '\r', ' ', '\n' });
+
+                    UTC utc = new UTC(utcValue, name);
+
+                    timeZone.Add(utc);
+                }
             }
+            catch (Exception e)
+            { }
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]

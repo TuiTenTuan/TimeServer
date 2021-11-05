@@ -138,7 +138,7 @@ namespace TimeServer
 
             lvIpConnect.Dispatcher.Invoke(DispatcherPriority.Render, new Action(delegate ()
                 {
-                    lvIpConnect.Items.Add(socket.RemoteEndPoint.ToString() + " " + DateTime.Now.ToString("dd/mm/yyyy HH:mm:ss"));
+                    lvIpConnect.Items.Add(socket.RemoteEndPoint.ToString() + " " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
                 }));
 
             socket.BeginReceive(bufferData, 0, bufferData.Length, SocketFlags.None, new AsyncCallback(ReceiceCallBack), socket);
