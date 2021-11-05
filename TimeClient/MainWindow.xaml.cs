@@ -186,7 +186,7 @@ namespace TimeClient
                 MessageBox.Show(trueTime.ToString());
 
                 //set time to system
-                //SetTimeForSystem(trueTime);
+                SetTimeForSystem(trueTime);
 
                 tbStatus.Text = "Sync time success from server " + ip + " at " + trueTime.ToString();
             }
