@@ -190,7 +190,7 @@ namespace TimeClient
                 DateTime trueTime = DateTime.Now.AddMilliseconds(timeOfset);
 
 
-                trueTime = trueTime.AddHours(-12);
+                //trueTime = trueTime.AddHours(-12);
 
 
                 MessageBox.Show(trueTime.ToString("dd/MM/yyyy HH:mm:ss"));
