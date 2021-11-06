@@ -154,7 +154,7 @@ namespace TimeClient
                 //save time send resquest
                 value[0] = DateTime.UtcNow;
 
-                byte[] data = encoding.GetBytes(value[0].ToString());
+                byte[] data = encoding.GetBytes(value[0].ToString("dd/MM/yyyy HH:mm:ss"));
 
                 Stream stream = client.GetStream();
 
@@ -171,9 +171,11 @@ namespace TimeClient
                 //save time receive message from server
                 value[3] = DateTime.UtcNow;
 
-                value[1] = DateTime.Parse(encoding.GetString(receive1));
-                value[2] = DateTime.Parse(encoding.GetString(receive2));
+                //value[1] = DateTime.Parse(encoding.GetString(receive1));
+                //value[2] = DateTime.Parse(encoding.GetString(receive2));
 
+                value[1] = ConverStringToDate(encoding.GetString(receive1));
+                value[2] = ConverStringToDate(encoding.GetString(receive2));
 
                 //caculator ofset time
 
@@ -187,10 +189,14 @@ namespace TimeClient
                 //add ofset time
                 DateTime trueTime = DateTime.Now.AddMilliseconds(timeOfset);
 
-                MessageBox.Show(trueTime.ToString());
+
+                trueTime = trueTime.AddHours(-12);
+
+
+                MessageBox.Show(trueTime.ToString("dd/MM/yyyy HH:mm:ss"));
 
                 //set time to system
-                SetTimeForSystem(trueTime);
+                //SetTimeForSystem(trueTime);
 
                 tbStatus.Text = "Sync time success from server " + ip + " at " + trueTime.ToString();
             }
@@ -242,6 +248,10 @@ namespace TimeClient
 
         private void SetTimeForSystem(DateTime time)
         {
+            //int timeset = (int)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalDays;
+
+            //time = time.AddHours(-timeset);
+
             SYSTEMTIME st = new SYSTEMTIME();
             st.wYear = (short)time.Year; // must be short
             st.wMonth = (short)time.Month;
@@ -251,6 +261,29 @@ namespace TimeClient
             st.wSecond = (short)time.Second;
 
             SetSystemTime(ref st);
+        }
+
+        private DateTime ConverStringToDate(string input)
+        {
+            DateTime result = DateTime.MinValue;
+
+            string[] sliptStrings = input.Split('/');
+
+            int day = int.Parse(sliptStrings[1]);
+            int month = int.Parse(sliptStrings[0]);
+            int year = int.Parse(sliptStrings[2].Substring(0,4));
+
+            input = sliptStrings[2].Substring(5);
+
+            sliptStrings = input.Split(':');
+
+            int hour = int.Parse(sliptStrings[0]);
+            int minutes = int.Parse(sliptStrings[1]);
+            int second = int.Parse(sliptStrings[2].Split(' ')[0]);
+
+            result = new DateTime(year, month, day, hour, minutes, second);
+
+            return result;
         }
     }
 }

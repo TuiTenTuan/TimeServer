@@ -163,7 +163,7 @@ namespace TimeServer
 
             string text = Encoding.ASCII.GetString(dataBuffer);
 
-            string timeReceiver = DateTime.UtcNow.ToString();
+            string timeReceiver = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss");
 
             Thread.Sleep(1000);
 
@@ -171,7 +171,7 @@ namespace TimeServer
 
             socket.BeginSend(dataSend, 0, dataSend.Length, SocketFlags.None, new AsyncCallback(SendCallBack), socket);
 
-            dataSend = Encoding.ASCII.GetBytes(DateTime.UtcNow.ToString());
+            dataSend = Encoding.ASCII.GetBytes(DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss"));
             socket.BeginSend(dataSend, 0, dataSend.Length, SocketFlags.None, new AsyncCallback(SendCallBack), socket);
         }
 
