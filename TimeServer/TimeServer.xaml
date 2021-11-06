@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeServer"
         mc:Ignorable="d"
-        Title="Timer Server" Height="400" Width="400" Style="{StaticResource WindowStyle}" WindowStartupLocation="CenterScreen" Background="#909090" Loaded="MainWindow_OnLoaded" Closed="MainWindow_OnClosed">
+        Title="Timer Server" Height="400" Width="400" Style="{StaticResource WindowStyle}" WindowStartupLocation="CenterScreen" Background="{StaticResource BackgroundBrush}" Loaded="MainWindow_OnLoaded" Closed="MainWindow_OnClosed">
     <Grid Width="390" Height="360">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
