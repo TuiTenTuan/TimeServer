@@ -95,7 +95,8 @@ namespace TimeClient
                 }
                 catch (Exception exception)
                 {
-                    tbStatus.Text = "Something went wrong when sync time from clock.tuitentuan.com";
+                    //tbStatus.Text = "Something went wrong when sync time from clock.tuitentuan.com";
+                    tbStatus.Text = exception.Message;
                 }
             }
             else
@@ -132,7 +133,8 @@ namespace TimeClient
             }
             catch (Exception e)
             {
-                tbStatus.Text = "Something went wrong when sync time from server " + tbIpServer.Text;
+                //tbStatus.Text = "Something went wrong when sync time from server " + tbIpServer.Text;
+                tbStatus.Text = e.Message;
             }
         }
 
@@ -269,9 +271,9 @@ namespace TimeClient
 
             string[] sliptStrings = input.Split('/');
 
-            int day = int.Parse(sliptStrings[1]);
-            int month = int.Parse(sliptStrings[0]);
-            int year = int.Parse(sliptStrings[2].Substring(0,4));
+            int day = int.Parse(sliptStrings[0]);
+            int month = int.Parse(sliptStrings[1]);
+            int year = int.Parse(sliptStrings[2].Substring(0, 4));
 
             input = sliptStrings[2].Substring(5);
 
